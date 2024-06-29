@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JQuery</title>
+ 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Styles for Modal */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        #modalContent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        /* Styles for Highlighted Element */
+        .highlighted {
+            background-color: rgb(42, 36, 90);
+            margin-left: 20px;
+        }
+        /* Styles for Tooltip */
+        #tooltip {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        /* Style for the image */
+        #fade-in-image {
+        opacity: 0; /* Initially hide the image */
+        width: 300px; 
+        transition: opacity 0.5s ease; /* Smooth transition for fading effect */
+        }
+        
+        .container{
+            display: flex;
+            flex-direction: column;
+            border: 5px solid black;
+            height: 80%;
+            width: 25%;
+            margin-left: 35%;
+            padding: 20px;
+            margin-top:3%;
+            text-align: center;
+            background-color: rgb(205, 191, 219) ;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h3>Toggle Visibility</h3>
+    <!-- Toggle Visibility -->
+    <div id="toggleElement" style="display: none;">
+        <p>Hello World!</p>
+        
+    </div>
+    <button id="toggleButton">Toggle Visibility</button>
+    <br>
+    <br>
+    <h3>Message Display on Button Click</h3>
+    <!-- Display Message on Button Click -->
+    <button id="messageButton">Click Me For A Message</button>
+ <br>
+ <br>
+ <h3>Change Color on Button Click</h3>
+     <!-- Change Background Color -->
+     <div id="changeColorDiv" style="width: 100px; height: 100px; margin-left: 20px; background-color: lightblue; margin-top: 20px;"></div>
+     <br><br>
+     <button id="changeColorButton">Click On the Button to Change Color</button>
+     <br><br>
+      <!-- Form Submission Alert -->
+<h3>Submission Form</h3>
+    <form id="sampleForm">
+        <input type="text" name="name" placeholder="Name" required><br>
+        <input type="email" name="email" placeholder="Email [*correct format]" required><br>
+        <br>
+        <button type="button" id="submitButton">Submit</button>
+    </form>
+<h3>Fade In Image</h3>
+    <!-- Fade In Image on Scroll -->
+    <div style="height: 1000px;">Scroll down to see the image fade in.</div>
+    <img id="fade-in-image" src="snowhite.jpg" alt="Fading Image" >
+    
+    <br>
+    <h3>Class Added on Hover!</h3>
+  <!--  Add Class on Hover -->
+  <div id="hoverElement" style="width: 200px; height: 100px;">Hover over me!</div>
+  <h3>Model Window On Button Click! </h3>
+<!-- Display Modal Window on Button Click -->
+<button id="openModalButton">Open Modal</button>
+<div id="modal">
+    <div id="modalContent">
+        <h2>Modal Window</h2>
+        <p>This is a modal window. Have a good day!</p>
+        <button id="closeModalButton">Close</button>
+    </div>
+</div>
+<br><br>
+<h3>Sorting Alphabetically</h3>
+<!-- Sort List Alphabetically -->
+<ul id="sortableList">
+    <li>C++</li>
+    <li>Python</li>
+    <li>Java</li>
+    <li>HTML</li>
+</ul>
+<button id="sortButton"> Click Button to Sort Alphabetically</button>
+<br><br>
+<h3>Display ToolTip on Hover</h3>
+ <!-- Display Tooltip on Hover -->
+ <div id="tooltipElement" style="position: relative;">Hover over me for Programming Languages List!
+    <div id="tooltip">JQuery, Html, Css, JavaScript</div>
+</div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Toggle Visibility
+            $("#toggleButton").click(function(){
+                $("#toggleElement").toggle();
+            });
+        
+            // Display Message on Button Click
+            $("#messageButton").click(function(){
+                alert("Have A Good Day!");
+            });
+        
+            // Change Background Color
+            $("#changeColorButton").click(function(){
+                $("#changeColorDiv").css("background-color", "red");
+            });
+        
+            // Form Submission Alert
+            $("#submitButton").click(function(){
+    var name = $("input[name='name']").val(); // Get the value of the name input field
+    var email = $("input[name='email']").val(); // Get the value of the email input field
+    
+    // Check if both fields are not empty and if the email contains "@" symbol
+    if (name.trim() === "" || email.trim() === "" || !email.includes("@")) {
+        alert("Please fill out all required fields correctly.");
+    } else {
+        alert("Form submitted successfully!");
+    }
+});
+        
+            // Fade In Image on Scroll
+            // Function to check if element is in viewport
+            function isInViewport(element) {
+                var rect = element.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            }
+        
+            // Function to handle fading in the image
+            function fadeInImage() {
+                if (isInViewport($('#fade-in-image')[0])) {
+                    $('#fade-in-image').css('opacity', 1);
+                    // Once image is faded in, remove the scroll event listener to improve performance
+                    $(window).off('scroll', fadeInImage);
+                }
+            }
+        
+            // Attach scroll event listener
+            $(window).on('scroll', fadeInImage);
+        
+            // Call fadeInImage once when the page loads, in case the image is already in viewport
+            fadeInImage();
+        
+            // Add Class on Hover
+            $("#hoverElement").hover(function(){
+                $(this).addClass("highlighted");
+            }, function(){
+                $(this).removeClass("highlighted");
+            });
+        
+            // Display Modal Window on Button Click
+            $("#openModalButton").click(function(){
+                $("#modal").show();
+            });
+            $("#closeModalButton").click(function(){
+                $("#modal").hide();
+            });
+        
+            // Sort List Alphabetically
+            $("#sortButton").click(function(){
+                var list = $("#sortableList");
+                var items = list.children("li").get();
+                items.sort(function(a, b) {
+                    return $(a).text().localeCompare($(b).text());
+                });
+                $.each(items, function(index, item) {
+                    list.append(item);
+                });
+            });
+        
+            // Display Tooltip on Hover
+            $("#tooltipElement").hover(function(){
+                $("#tooltip").show();
+            }, function(){
+                $("#tooltip").hide();
+            });
+        });
+        </script>
+        </body>
+        </html>
